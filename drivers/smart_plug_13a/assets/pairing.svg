@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="150" fill="none" version="1.1" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <radialGradient id="radialGradient1966" cx="65.5" cy="109.5" r="13" gradientTransform="matrix(.26458 0 0 .26458 -.22737 1.5349)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#0078CC" offset="0"/>
+   <stop stop-color="#0078CC" offset=".6"/>
+   <stop stop-color="#0078CC" stop-opacity="0" offset="1"/>
+  </radialGradient>
+ </defs>
+ <g stroke="#000">
+  <path d="m98.5 14h-45c-15.74 0-28.5 12.76-28.5 28.5v65c0 15.74 12.76 28.5 28.5 28.5h45c15.74 0 28.5-12.76 28.5-28.5v-65c0-15.74-12.76-28.5-28.5-28.5zm-45-4c-17.949 0-32.5 14.551-32.5 32.5v65c0 17.949 14.551 32.5 32.5 32.5h45c17.949 0 32.5-14.551 32.5-32.5v-65c0-17.949-14.551-32.5-32.5-32.5h-45z" clip-rule="evenodd" fill="#000" fill-rule="evenodd"/>
+  <g stroke-width="2">
+   <path d="m112 75c0 20.434-16.566 37-37 37s-37-16.566-37-37 16.566-37 37-37 37 16.566 37 37z"/>
+   <path d="m106 75c0 17.121-13.879 31-31 31s-31-13.879-31-31 13.879-31 31-31 31 13.879 31 31z"/>
+   <circle cx="61.5" cy="72.5" r="4.5" fill="#000"/>
+   <circle cx="88.5" cy="72.5" r="4.5" fill="#000"/>
+  </g>
+  <path d="m69 105.5v-4.5c0-1.6569 1.3431-3 3-3h6c1.6569 0 3 1.3431 3 3v4.5" stroke-width="1.6071"/>
+  <path d="m69 44.5v4.5c0 1.6569 1.3431 3 3 3h6c1.6569 0 3-1.3431 3-3v-4.5" stroke-width="1.6071"/>
+ </g>
+ <g transform="matrix(3.7795 0 0 3.7795 11.359 -102.3)">
+  <style type="text/css">.press {
+    animation: press 5s infinite;
+}
+
+@keyframes press {
+    0%, 5%, 15%, 25%, 35%, 100% {
+        opacity: 0;
+    }
+    10%, 20%, 30% {
+        opacity: 0.75;
+    }
+}</style>
+  <circle class="press" cx="17.103" cy="30.507" r="3.4396" fill="url(#radialGradient1966)" stroke-width=".26458"/>
+ </g>
+</svg>

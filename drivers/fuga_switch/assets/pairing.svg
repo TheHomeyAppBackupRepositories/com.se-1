@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="150" fill="none" version="1.1" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <radialGradient id="radialGradient1966" cx="65.5" cy="109.5" r="13" gradientTransform="matrix(.26458 0 0 .26458 -.22737 1.5349)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#0078CC" offset="0"/>
+   <stop stop-color="#0078CC" offset=".6"/>
+   <stop stop-color="#0078CC" stop-opacity="0" offset="1"/>
+  </radialGradient>
+ </defs>
+ <g fill="#000">
+  <path d="m135 14h-120c-0.5523 0-1 0.4477-1 1v38c0 0.5523 0.4477 1 1 1h120c0.552 0 1-0.4477 1-1v-38c0-0.5523-0.448-1-1-1zm-120-4c-2.7614 0-5 2.2386-5 5v38c0 2.7614 2.2386 5 5 5h120c2.761 0 5-2.2386 5-5v-38c0-2.7614-2.239-5-5-5h-120zm120 86h-120c-0.5523 0-1 0.4477-1 1v38c0 0.552 0.4477 1 1 1h120c0.552 0 1-0.448 1-1v-38c0-0.5523-0.448-1-1-1zm-120-4c-2.7614 0-5 2.2386-5 5v38c0 2.761 2.2386 5 5 5h120c2.761 0 5-2.239 5-5v-38c0-2.7614-2.239-5-5-5h-120zm0-27h120c0.552 0 1 0.4477 1 1v18c0 0.5523-0.448 1-1 1h-120c-0.5523 0-1-0.4477-1-1v-18c0-0.5523 0.4477-1 1-1zm-5 1c0-2.7614 2.2386-5 5-5h120c2.761 0 5 2.2386 5 5v18c0 2.7614-2.239 5-5 5h-120c-2.7614 0-5-2.2386-5-5v-18z" clip-rule="evenodd" fill-rule="evenodd"/>
+  <circle cx="128" cy="105" r="4"/>
+  <circle cx="128" cy="22" r="4"/>
+  <circle cx="24" cy="105" r="4"/>
+  <circle cx="24" cy="22" r="4"/>
+ </g>
+ <g stroke="#000" stroke-width="2">
+  <line x1="32" x2="32" y1="113" y2="120" stroke-linecap="round"/>
+  <line x1="32" x2="32" y1="31" y2="38" stroke-linecap="round"/>
+  <circle cx="120" cy="117" r="4"/>
+  <circle cx="120" cy="35" r="4"/>
+ </g>
+ <g transform="matrix(3.7795 0 0 3.7795 -32.641 -80.802)">
+  <style type="text/css">.press {
+    animation: press 5s infinite;
+}
+
+@keyframes press {
+    0%, 5%, 15%, 25%, 35%, 100% {
+        opacity: 0;
+    }
+    10%, 20%, 30% {
+        opacity: 0.75;
+    }
+}</style>
+  <circle class="press" cx="17.103" cy="30.507" r="3.4396" fill="url(#radialGradient1966)" stroke-width=".26458"/>
+ </g>
+</svg>
