@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.se",
-  "version": "1.0.3",
+  "version": "1.5.6",
   "compatibility": ">=8.1.1",
   "platforms": [
     "local",
@@ -54,7 +54,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=super_tr_thermostat&capabilities=command_regulator_duty_cycle"
+            "filter": "driver_id=super_tr_thermostat|smart_plus_thermostat&capabilities=command_regulator_duty_cycle"
           }
         ],
         "tokens": [
@@ -162,7 +162,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=wireless_switch|freelocate_switch|multi_button_switch|fuga_switch|multi_button_dimmer|fuga_dimmer|one_gang_switch|one_gang_eswitch|one_gang_dimmer|one_gang_1-10V_dimmer|one_gang_dali_dimmer|one_gang_shutter|two_gang_switch|two_gang_eswitch|two_gang_dimmer&capabilities=supports_held_buttons"
+            "filter": "driver_id=wireless_switch|freelocate_switch|freelocate_switch_fuga|multi_button_switch|multi_button_switch_split|fuga_switch|fuga_switch_split|multi_button_dimmer|fuga_dimmer|one_gang_switch|one_gang_eswitch|one_gang_dimmer|one_gang_1-10V_dimmer|one_gang_dali_dimmer|one_gang_shutter|two_gang_switch|two_gang_switch_split|two_gang_eswitch|two_gang_eswitch_split|two_gang_dimmer|two_gang_dimmer_split&capabilities=supports_held_buttons"
           },
           {
             "name": "button",
@@ -254,7 +254,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=wireless_switch|freelocate_switch|multi_button_switch|fuga_switch|multi_button_dimmer|fuga_dimmer|two_gang_switch|two_gang_eswitch&capabilities=supports_long_release"
+            "filter": "driver_id=wireless_switch|freelocate_switch|freelocate_switch_fuga|multi_button_switch|multi_button_switch_split|fuga_switch|fuga_switch_split|multi_button_dimmer|fuga_dimmer|two_gang_switch|two_gang_switch_split|two_gang_eswitch|two_gang_eswitch_split&capabilities=supports_long_release"
           },
           {
             "name": "button",
@@ -346,7 +346,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=wireless_switch|freelocate_switch|multi_button_switch|fuga_switch|multi_button_dimmer|fuga_dimmer|one_gang_switch|one_gang_eswitch|one_gang_dimmer|one_gang_1-10V_dimmer|one_gang_dali_dimmer|one_gang_shutter|two_gang_switch|two_gang_eswitch|two_gang_dimmer"
+            "filter": "driver_id=wireless_switch|freelocate_switch|freelocate_switch_fuga|multi_button_switch|multi_button_switch_split|fuga_switch|fuga_switch_split|multi_button_dimmer|fuga_dimmer|one_gang_switch|one_gang_eswitch|one_gang_dimmer|one_gang_1-10V_dimmer|one_gang_dali_dimmer|one_gang_shutter|two_gang_switch|two_gang_switch_split|two_gang_eswitch|two_gang_eswitch_split|two_gang_dimmer|two_gang_dimmer_split&capabilities=supports_short_release"
           },
           {
             "name": "button",
@@ -428,7 +428,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=super_tr_thermostat&capabilities=command_regulator_duty_cycle"
+            "filter": "driver_id=super_tr_thermostat|smart_plus_thermostat&capabilities=command_regulator_duty_cycle"
           },
           {
             "name": "command_duty_cycle",
@@ -474,6 +474,7 @@
       "capabilities": [
         "onoff",
         "meter_power",
+        "measure_power",
         "measure_current",
         "measure_voltage"
       ],
@@ -498,6 +499,7 @@
               64516
             ],
             "bindings": [
+              6,
               1794,
               2820
             ]
@@ -516,7 +518,7 @@
       "id": "connected_socket_outlet"
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -578,7 +580,150 @@
           }
         }
       },
-      "id": "dimmer_micromodule"
+      "id": "dimmer_micromodule",
+      "settings": [
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "class": "button",
@@ -603,7 +748,8 @@
       "capabilities": [
         "measure_battery",
         "supports_held_buttons",
-        "supports_long_release"
+        "supports_long_release",
+        "supports_short_release"
       ],
       "energy": {
         "batteries": [
@@ -614,9 +760,7 @@
         "manufacturerName": "Schneider Electric",
         "productId": [
           "FLS/SYSTEM-M/2",
-          "FLS/SYSTEM-M/4",
-          "FLS/AIRLINK/2",
-          "FLS/AIRLINK/4"
+          "FLS/SYSTEM-M/4"
         ],
         "endpoints": {
           "21": {
@@ -1214,6 +1358,629 @@
         "cloud"
       ],
       "images": {
+        "xlarge": "/drivers/freelocate_switch_fuga/assets/images/xlarge.png",
+        "large": "/drivers/freelocate_switch_fuga/assets/images/large.png",
+        "small": "/drivers/freelocate_switch_fuga/assets/images/small.png"
+      },
+      "name": {
+        "en": "Fuga Freelocate Switch",
+        "sv": "Fuga Freelocate Switch",
+        "no": "Fuga Trådløs bryter",
+        "da": "Fuga Freelocate Switch"
+      },
+      "capabilities": [
+        "measure_battery",
+        "supports_held_buttons",
+        "supports_long_release",
+        "supports_short_release"
+      ],
+      "energy": {
+        "batteries": [
+          "CR2032"
+        ]
+      },
+      "zigbee": {
+        "manufacturerName": "Schneider Electric",
+        "productId": [
+          "FLS/AIRLINK/2",
+          "FLS/AIRLINK/4"
+        ],
+        "endpoints": {
+          "21": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              25,
+              32,
+              258,
+              65303
+            ],
+            "bindings": [
+              1,
+              6,
+              8,
+              258
+            ]
+          },
+          "22": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "23": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "24": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          }
+        },
+        "learnmode": {
+          "image": "/drivers/freelocate_switch_fuga/assets/pairing.svg",
+          "instruction": {
+            "en": "Short press the 1 push button three times to start pairing.",
+            "sv": "Short press the 1 push button three times to start pairing.",
+            "no": "Trykk kort på trykkknappen 1 tre ganger for å starte paringen.",
+            "da": "Short press the 1 push button three times to start pairing."
+          }
+        }
+      },
+      "id": "freelocate_switch_fuga",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "CAUTION: Not all configurations work with the full Homey functionality. It is recommended to use 4 Dimmer actions, and to avoid using the (inverted) Light and Scene actions. Please wake up the device by pressing its buttons after changing these settings.",
+            "sv": "OBSERVERA: Det kan finnas konfigurationer som inte fungerar fullständigt i Homey-integrationen.",
+            "no": "Obs! Ikke alle konfigurasjoner fungerer med full Homey-funksjonalitet. Det anbefales å bruke 4 Dimmer-aksjoner og unngå å bruke Lys- og Scene-aksjoner. Vennligst vekk enheten ved å trykke på knappene etter å ha endret disse innstillingene.",
+            "da": "FORSIGTIG: Ikke alle konfigurationer fungerer med den fulde Homey funktionalitet. Det anbefales at bruge 4 dæmpere handlinger og for at undgå at bruge de (omvendte) lys- og scenehandlinger. Vågn op enheden ved at trykke på knapperne efter at have ændret disse indstillinger."
+          },
+          "children": [
+            {
+              "id": "switch_config_21",
+              "label": {
+                "en": "Mode for endpoint 21",
+                "sv": "Läge för slutstation 21",
+                "no": "Modus for endepunkt 21",
+                "da": "Mode til slutpunkt 21"
+              },
+              "value": "Dimmer",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_22",
+              "label": {
+                "en": "Mode for endpoint 22",
+                "sv": "Läge för slutstation 22",
+                "no": "Modus for endepunkt 22",
+                "da": "Mode til slutpunkt 22"
+              },
+              "value": "Dimmer",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_23",
+              "label": {
+                "en": "Mode for endpoint 23",
+                "sv": "Läge för slutstation 23",
+                "no": "Modus for endepunkt 23",
+                "da": "Mode til slutpunkt 23"
+              },
+              "value": "Not_Used",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_24",
+              "label": {
+                "en": "Mode for endpoint 24",
+                "sv": "Läge för slutstation 24",
+                "no": "Modus for endepunkt 24",
+                "da": "Mode til slutpunkt 24"
+              },
+              "value": "Not_Used",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "light",
+      "connectivity": [
+        "zigbee"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
         "xlarge": "/drivers/fuga_dimmer/assets/images/xlarge.png",
         "large": "/drivers/fuga_dimmer/assets/images/large.png",
         "small": "/drivers/fuga_dimmer/assets/images/small.png"
@@ -1228,7 +1995,8 @@
         "onoff",
         "dim",
         "supports_held_buttons",
-        "supports_long_release"
+        "supports_long_release",
+        "supports_short_release"
       ],
       "capabilitiesOptions": {
         "dim": {
@@ -1843,11 +2611,152 @@
               ]
             }
           ]
+        },
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -1860,6 +2769,7 @@
         "large": "/drivers/fuga_switch/assets/images/large.png",
         "small": "/drivers/fuga_switch/assets/images/small.png"
       },
+      "deprecated": true,
       "name": {
         "en": "Fuga Switch",
         "sv": "Fuga Switch",
@@ -2490,7 +3400,664 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
+      "connectivity": [
+        "zigbee"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
+        "xlarge": "/drivers/fuga_switch_split/assets/images/xlarge.png",
+        "large": "/drivers/fuga_switch_split/assets/images/large.png",
+        "small": "/drivers/fuga_switch_split/assets/images/small.png"
+      },
+      "name": {
+        "en": "Fuga Switch",
+        "sv": "Fuga Switch",
+        "no": "Fuga Switch",
+        "da": "Fuga Switch"
+      },
+      "capabilities": [
+        "onoff",
+        "supports_held_buttons",
+        "supports_long_release",
+        "supports_short_release"
+      ],
+      "zigbee": {
+        "manufacturerName": "Schneider Electric",
+        "productId": [
+          "LK Switch"
+        ],
+        "devices": {
+          "secondChannel": {
+            "name": {
+              "en": "Fuga Switch (2)",
+              "sv": "Fuga Switch (2)",
+              "no": "Fuga Switch (2)",
+              "da": "Fuga Switch (2)"
+            },
+            "capabilities": [
+              "onoff"
+            ],
+            "settings": []
+          }
+        },
+        "endpoints": {
+          "1": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              25,
+              2821
+            ],
+            "bindings": [
+              6
+            ]
+          },
+          "2": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              2821
+            ],
+            "bindings": [
+              6
+            ]
+          },
+          "21": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              25,
+              32,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "22": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "23": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "24": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          }
+        },
+        "learnmode": {
+          "image": "/drivers/fuga_switch_split/assets/pairing.svg",
+          "instruction": {
+            "en": "Short press the top left push button three times to start pairing.",
+            "sv": "Short press the top left push button three times to start pairing.",
+            "no": "Trykk kort på den øverste venstre trykknappen tre ganger for å starte paringen.",
+            "da": "Short press the top left push button three times to start pairing."
+          }
+        }
+      },
+      "id": "fuga_switch_split",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "CAUTION: Not all configurations work with the full Homey functionality. It is recommended to use 4 Dimmer actions, and to avoid using the (inverted) Light and Scene actions.",
+            "sv": "OBSERVERA: Det är inte samtliga konfigurationer som fungerar fullständigt i Homey-integrationen.",
+            "no": "ADVARSEL: Ikke alle konfigurasjoner fungerer med full Homey-funksjonalitet. Det anbefales å bruke 4 Dimmer-handlinger og å unngå å bruke Lys- og Scene-handlinger.",
+            "da": "FORSIGTIG: Ikke alle konfigurationer fungerer med den fulde Homey funktionalitet. Det anbefales at bruge 4 dæmpere handlinger og for at undgå at bruge de (omvendte) lys- og scenehandlinger."
+          },
+          "children": [
+            {
+              "id": "switch_config_21",
+              "label": {
+                "en": "Mode for endpoint 21",
+                "sv": "Läge för slutstation 21",
+                "no": "Modus for endepunkt 21",
+                "da": "Mode til slutpunkt 21"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_22",
+              "label": {
+                "en": "Mode for endpoint 22",
+                "sv": "Läge för slutstation 22",
+                "no": "Modus for endepunkt 22",
+                "da": "Mode til slutpunkt 22"
+              },
+              "value": "Light_opposite",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_23",
+              "label": {
+                "en": "Mode for endpoint 23",
+                "sv": "Läge för slutstation 23",
+                "no": "Modus for endepunkt 23",
+                "da": "Mode til slutpunkt 23"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_24",
+              "label": {
+                "en": "Mode for endpoint 24",
+                "sv": "Läge för slutstation 24",
+                "no": "Modus for endepunkt 24",
+                "da": "Mode til slutpunkt 24"
+              },
+              "value": "Light_opposite",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -2769,6 +4336,147 @@
           "value": 100,
           "min": 0,
           "max": 100
+        },
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
         }
       ]
     },
@@ -2873,7 +4581,7 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -3117,7 +4825,7 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -3139,7 +4847,8 @@
       "capabilities": [
         "onoff",
         "dim",
-        "supports_held_buttons"
+        "supports_held_buttons",
+        "supports_short_release"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
@@ -3326,11 +5035,152 @@
               ]
             }
           ]
+        },
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -3352,7 +5202,8 @@
       "capabilities": [
         "onoff",
         "dim",
-        "supports_held_buttons"
+        "supports_held_buttons",
+        "supports_short_release"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
@@ -3539,11 +5390,152 @@
               ]
             }
           ]
+        },
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -3565,7 +5557,8 @@
       "capabilities": [
         "onoff",
         "dim",
-        "supports_held_buttons"
+        "supports_held_buttons",
+        "supports_short_release"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
@@ -3752,11 +5745,152 @@
               ]
             }
           ]
+        },
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -3777,7 +5911,8 @@
       },
       "capabilities": [
         "onoff",
-        "supports_held_buttons"
+        "supports_held_buttons",
+        "supports_short_release"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
@@ -3990,7 +6125,8 @@
         "windowcoverings_set",
         "windowcoverings_state",
         "windowcoverings_tilt_set",
-        "supports_held_buttons"
+        "supports_held_buttons",
+        "supports_short_release"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
@@ -4299,7 +6435,7 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -4320,7 +6456,8 @@
       },
       "capabilities": [
         "onoff",
-        "supports_held_buttons"
+        "supports_held_buttons",
+        "supports_short_release"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
@@ -4532,6 +6669,7 @@
       "capabilities": [
         "onoff",
         "meter_power",
+        "measure_power",
         "measure_current",
         "measure_voltage"
       ],
@@ -4556,6 +6694,7 @@
               64516
             ],
             "bindings": [
+              6,
               1794,
               2820
             ]
@@ -4596,13 +6735,14 @@
       "capabilities": [
         "onoff",
         "meter_power",
+        "measure_power",
         "measure_current",
         "measure_voltage"
       ],
       "zigbee": {
         "manufacturerName": "Schneider Electric",
         "productId": [
-          "SOCKET/OUTLET/LK"
+          "LK/OUTLET/1"
         ],
         "endpoints": {
           "6": {
@@ -4620,6 +6760,7 @@
               64516
             ],
             "bindings": [
+              6,
               1794,
               2820
             ]
@@ -4638,7 +6779,7 @@
       "id": "other_other_connected_socket_outlet"
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -4701,10 +6842,153 @@
           }
         }
       },
-      "id": "push_button_dimmer"
+      "id": "push_button_dimmer",
+      "settings": [
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -4826,7 +7110,7 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -4889,7 +7173,150 @@
           }
         }
       },
-      "id": "rotary_dimmer"
+      "id": "rotary_dimmer",
+      "settings": [
+        {
+          "id": "ballastMinLevel",
+          "type": "number",
+          "label": {
+            "en": "Minimum level",
+            "sv": "Miniminivå",
+            "no": "Minimumsnivå",
+            "da": "Minimum niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The minimum output level.",
+            "sv": "Minsta uteffektnivå.",
+            "no": "Minimum utgangsnivå.",
+            "da": "Minimum udgangsniveau."
+          },
+          "value": 1,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "ballastMaxLevel",
+          "type": "number",
+          "label": {
+            "en": "Maximum level",
+            "sv": "Maximal nivå",
+            "no": "Maksimalt nivå",
+            "da": "Maksimal niveau"
+          },
+          "units": {
+            "en": "%"
+          },
+          "hint": {
+            "en": "The maximum output level.",
+            "sv": "Den maximala utgångsnivån.",
+            "no": "Maksimalt utgangsnivå.",
+            "da": "Det maksimale udgangsniveau."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "class": "blinds",
@@ -5602,7 +8029,7 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -5789,7 +8216,7 @@
       "id": "temperature_humidity_sensor"
     },
     {
-      "class": "button",
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -5802,6 +8229,7 @@
         "large": "/drivers/two_gang_dimmer/assets/images/large.png",
         "small": "/drivers/two_gang_dimmer/assets/images/small.png"
       },
+      "deprecated": true,
       "name": {
         "en": "2-Channel Dimmer",
         "sv": "2-Channel Dimmer",
@@ -6159,7 +8587,586 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
+      "connectivity": [
+        "zigbee"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
+        "xlarge": "/drivers/two_gang_dimmer_split/assets/images/xlarge.png",
+        "large": "/drivers/two_gang_dimmer_split/assets/images/large.png",
+        "small": "/drivers/two_gang_dimmer_split/assets/images/small.png"
+      },
+      "name": {
+        "en": "2-Channel Dimmer",
+        "sv": "2-Channel Dimmer",
+        "no": "2-kanals dimmer",
+        "da": "2-Channel Dimmer"
+      },
+      "capabilities": [
+        "onoff",
+        "dim",
+        "supports_held_buttons",
+        "supports_short_release"
+      ],
+      "zigbee": {
+        "manufacturerName": "Schneider Electric",
+        "productId": [
+          "2GANG/DIMMER/2"
+        ],
+        "devices": {
+          "secondChannel": {
+            "name": {
+              "en": "2-Channel Dimmer (2)",
+              "sv": "2-Channel Dimmer (2)",
+              "no": "2-kanals dimmer (2)",
+              "da": "2-Channel Dimmer (2)"
+            },
+            "capabilities": [
+              "onoff",
+              "dim"
+            ],
+            "settings": [
+              {
+                "id": "onLevel",
+                "type": "number",
+                "label": {
+                  "en": "On level",
+                  "sv": "På nivå",
+                  "no": "På nivå",
+                  "da": "På niveau"
+                },
+                "units": {
+                  "en": "%",
+                  "sv": "%",
+                  "no": "%",
+                  "da": "%"
+                },
+                "hint": {
+                  "en": "The output level to use when the device is turned on.",
+                  "sv": "Utgångsnivån som ska användas när enheten slås på.",
+                  "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+                  "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+                },
+                "value": 100,
+                "min": 1,
+                "max": 100
+              },
+              {
+                "id": "usePreviousOnLevel",
+                "type": "checkbox",
+                "value": true,
+                "label": {
+                  "en": "Use previous level",
+                  "sv": "Använd föregående nivå",
+                  "no": "Bruk forrige nivå",
+                  "da": "Brug forrige niveau"
+                },
+                "hint": {
+                  "en": "Use the previous active level when the device is turned on.",
+                  "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+                  "no": "Bruk forrige aktive nivå når enheten er slått på.",
+                  "da": "Brug det forrige aktive niveau, når enheden er tændt."
+                }
+              },
+              {
+                "id": "controlMode",
+                "type": "dropdown",
+                "value": "automatic",
+                "label": {
+                  "en": "Control mode",
+                  "sv": "Kontrolläge",
+                  "no": "Kontrollmodus",
+                  "da": "Kontroltilstand"
+                },
+                "hint": {
+                  "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+                  "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+                  "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+                  "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+                },
+                "values": [
+                  {
+                    "id": "automatic",
+                    "label": {
+                      "en": "Automatic",
+                      "sv": "Automatisk",
+                      "no": "Automatisk",
+                      "da": "Automatisk"
+                    }
+                  },
+                  {
+                    "id": "rcMode",
+                    "label": {
+                      "en": "RC mode",
+                      "sv": "RC-läge",
+                      "no": "RC-modus",
+                      "da": "RC-tilstand"
+                    }
+                  },
+                  {
+                    "id": "rlMode",
+                    "label": {
+                      "en": "RL mode",
+                      "sv": "RL-läge",
+                      "no": "RL-modus",
+                      "da": "RL-tilstand"
+                    }
+                  },
+                  {
+                    "id": "rlLED",
+                    "label": {
+                      "en": "RL LED",
+                      "sv": "RL LED",
+                      "no": "RL LED",
+                      "da": "RL LED"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "endpoints": {
+          "3": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              8,
+              25,
+              769,
+              2821
+            ],
+            "bindings": [
+              6,
+              8
+            ]
+          },
+          "4": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              8,
+              769,
+              2821
+            ],
+            "bindings": [
+              6,
+              8
+            ]
+          },
+          "21": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              2821,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "22": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              2821,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          }
+        },
+        "learnmode": {
+          "image": "/drivers/two_gang_dimmer_split/assets/pairing.svg",
+          "instruction": {
+            "en": "Short press the top right push button three times to start pairing.",
+            "sv": "Short press the top right push button three times to start pairing.",
+            "no": "Trykk kort på trykkknappen øverst til høyre tre ganger for å starte paringen.",
+            "da": "Short press the top right push button three times to start pairing."
+          }
+        }
+      },
+      "id": "two_gang_dimmer_split",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "CAUTION: Not all configurations work with the full Homey functionality. It is recommended to use Schneider Shutter actions to reroute all actions via Homey, and Dimmer actions for full control otherwise.",
+            "sv": "OBSERVERA: Det kan finnas konfigurationer som inte fungerar fullständigt i Homey-integrationen.",
+            "no": "Obs! Ikke alle konfigurasjoner fungerer med full Homey-funksjonalitet. Det anbefales å bruke ELKO Smart solskjermingsbryter-aksjoner for å omdirigere alle handlinger via Homey, og Dimmer-aksjoner for full kontroll i andre tilfeller.",
+            "da": "FORSIGTIG: Ikke alle konfigurationer fungerer med den fulde Homey funktionalitet. Det anbefales at bruge Schneider -solafskærmningshandlinger til at omdirigere alle handlinger via Homey og dæmpere handlinger til fuld kontrol ellers."
+          },
+          "children": [
+            {
+              "id": "switch_config_21",
+              "label": {
+                "en": "Mode for endpoint 21",
+                "sv": "Läge för slutstation 21",
+                "no": "Modus for endepunkt 21",
+                "da": "Mode til slutpunkt 21"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_22",
+              "label": {
+                "en": "Mode for endpoint 22",
+                "sv": "Läge för slutstation 22",
+                "no": "Modus for endepunkt 22",
+                "da": "Mode til slutpunkt 22"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "onLevel",
+          "type": "number",
+          "label": {
+            "en": "On level",
+            "sv": "På nivå",
+            "no": "På nivå",
+            "da": "På niveau"
+          },
+          "units": {
+            "en": "%",
+            "sv": "%",
+            "no": "%",
+            "da": "%"
+          },
+          "hint": {
+            "en": "The output level to use when the device is turned on.",
+            "sv": "Utgångsnivån som ska användas när enheten slås på.",
+            "no": "Utgangsnivået som skal brukes når enheten er slått på.",
+            "da": "Udgangsniveauet, der skal bruges, når enheden er tændt."
+          },
+          "value": 100,
+          "min": 1,
+          "max": 100
+        },
+        {
+          "id": "usePreviousOnLevel",
+          "type": "checkbox",
+          "value": true,
+          "label": {
+            "en": "Use previous level",
+            "sv": "Använd föregående nivå",
+            "no": "Bruk forrige nivå",
+            "da": "Brug forrige niveau"
+          },
+          "hint": {
+            "en": "Use the previous active level when the device is turned on.",
+            "sv": "Använd den tidigare aktiva nivån när enheten är påslagen.",
+            "no": "Bruk forrige aktive nivå når enheten er slått på.",
+            "da": "Brug det forrige aktive niveau, når enheden er tændt."
+          }
+        },
+        {
+          "id": "controlMode",
+          "type": "dropdown",
+          "value": "automatic",
+          "label": {
+            "en": "Control mode",
+            "sv": "Kontrolläge",
+            "no": "Kontrollmodus",
+            "da": "Kontroltilstand"
+          },
+          "hint": {
+            "en": "The method used to control the dim level. A different mode may help with flickering or if dimming is not smooth.",
+            "sv": "Metoden som används för att styra dimnivån. Ett annat läge kan hjälpa till med flimmer eller om dimningen inte är jämn.",
+            "no": "Metoden som brukes for å kontrollere dimmenivået. En annen modus kan hjelpe med flimring eller hvis dimmingen ikke er jevn.",
+            "da": "Metoden, der bruges til at styre dæmpningsniveauet. En anden tilstand kan hjælpe med flimren, eller hvis dæmpningen ikke er jævn."
+          },
+          "values": [
+            {
+              "id": "automatic",
+              "label": {
+                "en": "Automatic",
+                "sv": "Automatisk",
+                "no": "Automatisk",
+                "da": "Automatisk"
+              }
+            },
+            {
+              "id": "rcMode",
+              "label": {
+                "en": "RC mode",
+                "sv": "RC-läge",
+                "no": "RC-modus",
+                "da": "RC-tilstand"
+              }
+            },
+            {
+              "id": "rlMode",
+              "label": {
+                "en": "RL mode",
+                "sv": "RL-läge",
+                "no": "RL-modus",
+                "da": "RL-tilstand"
+              }
+            },
+            {
+              "id": "rlLED",
+              "label": {
+                "en": "RL LED",
+                "sv": "RL LED",
+                "no": "RL LED",
+                "da": "RL LED"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -6172,6 +9179,7 @@
         "large": "/drivers/two_gang_eswitch/assets/images/large.png",
         "small": "/drivers/two_gang_eswitch/assets/images/small.png"
       },
+      "deprecated": true,
       "name": {
         "en": "2-Channel Electronic Switch",
         "sv": "2-Channel Electronic Switch",
@@ -6523,7 +9531,385 @@
       ]
     },
     {
-      "class": "button",
+      "class": "light",
+      "connectivity": [
+        "zigbee"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
+        "xlarge": "/drivers/two_gang_eswitch_split/assets/images/xlarge.png",
+        "large": "/drivers/two_gang_eswitch_split/assets/images/large.png",
+        "small": "/drivers/two_gang_eswitch_split/assets/images/small.png"
+      },
+      "name": {
+        "en": "2-Channel Electronic Switch",
+        "sv": "2-Channel Electronic Switch",
+        "no": "2-kanals elektronisk bryter",
+        "da": "2-Channel Electronic Switch"
+      },
+      "capabilities": [
+        "onoff",
+        "supports_held_buttons",
+        "supports_short_release"
+      ],
+      "zigbee": {
+        "manufacturerName": "Schneider Electric",
+        "productId": [
+          "2GANG/ESWITCH/2"
+        ],
+        "devices": {
+          "secondChannel": {
+            "name": {
+              "en": "2-Channel Electronic Switch (2)",
+              "sv": "2-Channel Electronic Switch (2)",
+              "no": "2-kanals elektronisk bryter (2)",
+              "da": "2-Channel Electronic Switch (2)"
+            },
+            "capabilities": [
+              "onoff"
+            ],
+            "settings": []
+          }
+        },
+        "endpoints": {
+          "1": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              25,
+              2821
+            ],
+            "bindings": [
+              6
+            ]
+          },
+          "2": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              2821
+            ],
+            "bindings": [
+              6
+            ]
+          },
+          "21": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              25,
+              32,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "22": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          }
+        },
+        "learnmode": {
+          "image": "/drivers/two_gang_eswitch_split/assets/pairing.svg",
+          "instruction": {
+            "en": "Short press the top right push button three times to start pairing.",
+            "sv": "Short press the top right push button three times to start pairing.",
+            "no": "Trykk kort på trykkknappen øverst til høyre tre ganger for å starte paringen.",
+            "da": "Short press the top right push button three times to start pairing."
+          }
+        }
+      },
+      "id": "two_gang_eswitch_split",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "CAUTION: Not all configurations work with the full Homey functionality. It is recommended to use Schneider Shutter actions to reroute all actions via Homey, or Dimmer actions to still have a short press turn the outputs on/off",
+            "sv": "OBSERVERA: Det kan finnas konfigurationer som inte fungerar fullständigt i Homey-integrationen.",
+            "no": "FARE: Ikke alle konfigurasjoner fungerer med full Homey-funksjonalitet. Det anbefales å bruke ELKO Solskjermingsbryter-aksjoner for å omdirigere alle handlinger via Homey, eller Dimmer-aksjoner for å fortsatt kunne slå utgangene av/på med en kort trykk.",
+            "da": "FORSIGTIG: Ikke alle konfigurationer fungerer med den fulde Homey funktionalitet. Det anbefales at bruge Schneider -lukkerhandlinger til at omdirigere alle handlinger via Homey eller dæmpere handlinger for stadig at få en kort presse til at slå output til/fra"
+          },
+          "children": [
+            {
+              "id": "switch_config_21",
+              "label": {
+                "en": "Mode for endpoint 21",
+                "sv": "Läge för slutstation 21",
+                "no": "Modus for endepunkt 21",
+                "da": "Mode til slutpunkt 21"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_22",
+              "label": {
+                "en": "Mode for endpoint 22",
+                "sv": "Läge för slutstation 22",
+                "no": "Modus for endepukt 22",
+                "da": "Mode til slutpunkt 22"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "light",
       "connectivity": [
         "zigbee"
       ],
@@ -6536,6 +9922,7 @@
         "large": "/drivers/two_gang_switch/assets/images/large.png",
         "small": "/drivers/two_gang_switch/assets/images/small.png"
       },
+      "deprecated": true,
       "name": {
         "en": "2-Channel Relay Switch",
         "sv": "2-Channel Relay Switch",
@@ -6630,6 +10017,384 @@
         }
       },
       "id": "two_gang_switch",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "CAUTION: Not all configurations work with the full Homey functionality. It is recommended to use Schneider Shutter actions to reroute all actions via Homey, or Dimmer actions to still have a short press turn the outputs on/off",
+            "sv": "OBSERVERA: Det kan finnas konfigurationer som inte fungerar fullständigt i Homey-integrationen.",
+            "no": "FARE: Ikke alle konfigurasjoner fungerer med full Homey-funksjonalitet. Det anbefales å bruke ELKO Solskjermingsbryter-aksjoner for å omdirigere alle handlinger via Homey, eller Dimmer-aksjoner for å fortsatt kunne slå utgangene av/på med en kort trykk.",
+            "da": "FORSIGTIG: Ikke alle konfigurationer fungerer med den fulde Homey funktionalitet. Det anbefales at bruge Schneider -lukkerhandlinger til at omdirigere alle handlinger via Homey eller dæmpere handlinger for stadig at få en kort presse til at slå output til/fra"
+          },
+          "children": [
+            {
+              "id": "switch_config_21",
+              "label": {
+                "en": "Mode for endpoint 21",
+                "sv": "Läge för slutstation 21",
+                "no": "Modus for endepunkt 21",
+                "da": "Mode til slutpunkt 21"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "switch_config_22",
+              "label": {
+                "en": "Mode for endpoint 22",
+                "sv": "Läge för slutstation 22",
+                "no": "Modus for endepukt 22",
+                "da": "Mode til slutpunkt 22"
+              },
+              "value": "Light",
+              "type": "dropdown",
+              "values": [
+                {
+                  "id": "Light",
+                  "label": {
+                    "en": "Light",
+                    "sv": "Ljus",
+                    "no": "Lys",
+                    "da": "Lys"
+                  }
+                },
+                {
+                  "id": "Light_opposite",
+                  "label": {
+                    "en": "Light Inverted",
+                    "sv": "Belysning omvänd",
+                    "no": "Invertert lys  Gulvtemperatur Knapp",
+                    "da": "Lys omvendt"
+                  }
+                },
+                {
+                  "id": "Dimmer",
+                  "label": {
+                    "en": "Dimmer",
+                    "sv": "Dimmer",
+                    "no": "Dimmer",
+                    "da": "Dæmper"
+                  }
+                },
+                {
+                  "id": "Dimmer_opposite",
+                  "label": {
+                    "en": "Dimmer Inverted",
+                    "sv": "Dimmer omvänd",
+                    "no": "Invertert dimmer",
+                    "da": "Dæmper omvendt"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter",
+                  "label": {
+                    "en": "Standard Shutter",
+                    "sv": "Standardslutning",
+                    "no": "Standard solskjermingsbryter",
+                    "da": "Standard solafskærmning"
+                  }
+                },
+                {
+                  "id": "Standard_Shutter_opposite",
+                  "label": {
+                    "en": "Standard Shutter Inverted",
+                    "sv": "Omvänd standardslutning",
+                    "no": "Invertert standard solskjermingsbryter",
+                    "da": "Standardsolafskærmning inverteret"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter",
+                  "label": {
+                    "en": "Schneider Shutter",
+                    "sv": "Schneider brytare",
+                    "no": "ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning"
+                  }
+                },
+                {
+                  "id": "Schneider_Shutter_opposite",
+                  "label": {
+                    "en": "Schneider Shutter Inverted",
+                    "sv": "Schneider brytare omvänd",
+                    "no": "Invertert ELKO solskjermingsbryter",
+                    "da": "Schneider solafskærmning omvendt"
+                  }
+                },
+                {
+                  "id": "Scene",
+                  "label": {
+                    "en": "Scene",
+                    "sv": "Scen",
+                    "no": "Scene",
+                    "da": "Scene"
+                  }
+                },
+                {
+                  "id": "Toggle_Light",
+                  "label": {
+                    "en": "Light Toggle",
+                    "sv": "Belysningsknapp",
+                    "no": "Lys (bytte)",
+                    "da": "Lys skift"
+                  }
+                },
+                {
+                  "id": "Toggle_Dimmer",
+                  "label": {
+                    "en": "Dimmer Toggle",
+                    "sv": "Dimmerjustering",
+                    "no": "Dimmer (bytte)",
+                    "da": "Dæmper skift"
+                  }
+                },
+                {
+                  "id": "Not_Used",
+                  "label": {
+                    "en": "Inactive",
+                    "sv": "Inaktiv",
+                    "no": "Inaktiv",
+                    "da": "Inaktiv"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "light",
+      "connectivity": [
+        "zigbee"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
+        "xlarge": "/drivers/two_gang_switch_split/assets/images/xlarge.png",
+        "large": "/drivers/two_gang_switch_split/assets/images/large.png",
+        "small": "/drivers/two_gang_switch_split/assets/images/small.png"
+      },
+      "name": {
+        "en": "2-Channel Relay Switch",
+        "sv": "2-Channel Relay Switch",
+        "no": "2-kanals relébryter",
+        "da": "2-Channel Relay Switch"
+      },
+      "capabilities": [
+        "onoff",
+        "supports_held_buttons",
+        "supports_short_release"
+      ],
+      "zigbee": {
+        "manufacturerName": "Schneider Electric",
+        "productId": [
+          "2GANG/SWITCH/2"
+        ],
+        "devices": {
+          "secondChannel": {
+            "name": {
+              "en": "2-Channel Relay Switch (2)",
+              "sv": "2-Channel Relay Switch (2)",
+              "no": "2-kanals relébryter (2)",
+              "da": "2-Channel Relay Switch (2)"
+            },
+            "capabilities": [
+              "onoff"
+            ],
+            "settings": []
+          }
+        },
+        "endpoints": {
+          "1": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              25,
+              2821
+            ],
+            "bindings": [
+              6
+            ]
+          },
+          "2": {
+            "clusters": [
+              0,
+              3,
+              4,
+              5,
+              6,
+              2821
+            ],
+            "bindings": [
+              6
+            ]
+          },
+          "21": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              25,
+              32,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          },
+          "22": {
+            "clusters": [
+              0,
+              1,
+              3,
+              4,
+              5,
+              6,
+              8,
+              258,
+              65303
+            ],
+            "bindings": [
+              6,
+              8,
+              258
+            ]
+          }
+        },
+        "learnmode": {
+          "image": "/drivers/two_gang_switch_split/assets/pairing.svg",
+          "instruction": {
+            "en": "Short press the top right push button three times to start pairing.",
+            "sv": "Short press the top right push button three times to start pairing.",
+            "no": "Trykk kort på trykkknappen øverst til høyre tre ganger for å starte paringen.",
+            "da": "Short press the top right push button three times to start pairing."
+          }
+        }
+      },
+      "id": "two_gang_switch_split",
       "settings": [
         {
           "type": "group",
@@ -7196,6 +10961,15 @@
         "sv": "Supporterar lång knapptryckning",
         "no": "Støtter deteksjon av lang slipp-deteksjon",
         "da": "Understøtter detektion med lang frigivelse"
+      },
+      "type": "boolean",
+      "getable": false,
+      "setable": false,
+      "uiComponent": null
+    },
+    "supports_short_release": {
+      "title": {
+        "en": "Supports Short Release Detection"
       },
       "type": "boolean",
       "getable": false,
